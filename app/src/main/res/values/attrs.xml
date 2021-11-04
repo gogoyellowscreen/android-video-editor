@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VideoEditorRangeSelectorViewAbs" >
+        <attr name="android:drawableLeft" />
+        <attr name="android:drawableRight" />
+        <attr name="android:thumb" />
+        <attr name="android:value" />
+        <attr name="android:valueFrom" />
+        <attr name="android:valueTo" />
+        <attr name="rangeStrokeColor" format="color" />
+        <attr name="rangeStrokeWidth" format="dimension" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="fadeColor" format="color" />
+        <attr name="activeZoneMarginLeft" format="dimension" />
+        <attr name="activeZoneMarginRight" format="dimension" />
+        <attr name="trimEnabled" format="boolean"/>
+        <attr name="fillColor" format="color" />
+    </declare-styleable>
+</resources>

@@ -4,11 +4,15 @@ import android.content.Context
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.storage.StorageManager
+import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.random.Random
 

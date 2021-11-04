@@ -105,5 +105,4 @@
         app:layout_constraintHorizontal_bias="0.5"
         android:src="@drawable/editor_music_button"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

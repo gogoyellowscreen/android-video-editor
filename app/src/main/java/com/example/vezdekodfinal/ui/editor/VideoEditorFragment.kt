@@ -49,8 +49,8 @@ class VideoEditorFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         val pathString = arguments?.getString(PATH)
         val uri = Uri.parse(pathString)
@@ -69,8 +69,8 @@ class VideoEditorFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         exoPlayer.stop()
     }
 

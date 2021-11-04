@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".ui.main.MainFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="650dp"
+        android:maxWidth="250dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/editor_timeline"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="20dp"
+        >
+        <com.google.android.exoplayer2.ui.StyledPlayerView
+            android:id="@+id/exo_player_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:use_controller="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <com.example.vezdekodfinal.ui.editor.VideoEditorRangeSelectorViewAbs
+        android:id="@+id/editor_timeline"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableLeft="@drawable/video_trimmer_left_marker"
+        android:drawableRight="@drawable/video_trimmer_right_marker"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="8dp"
+        android:thumb="@drawable/video_position_marker"
+        app:cornerRadius="8dp"
+        app:fadeColor="#80000000"
+        app:rangeStrokeColor="#3F8AE0"
+        app:rangeStrokeWidth="2dp"
+        tools:value="0.5"
+        tools:valueFrom="0.3"
+        tools:valueTo="1.0"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
