@@ -1,5 +1,6 @@
 package com.example.vezdekodfinal.ui
 
+import android.app.Activity
 import android.content.Context
 import android.media.MediaExtractor
 import android.media.MediaFormat
@@ -9,7 +10,11 @@ import androidx.annotation.Dimension
 import java.io.FileDescriptor
 
 fun dpToPx(@Dimension dp: Int, context: Context): Int {
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), context.resources.displayMetrics).toInt()
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp.toFloat(),
+        context.resources.displayMetrics
+    ).toInt()
 }
 
 fun FileDescriptor.findFirstTrack(trackType: String): Int {
@@ -25,4 +30,16 @@ fun FileDescriptor.findFirstTrack(trackType: String): Int {
     }
     extractor.release()
     return trackIdx
+}
+
+fun windowHeight(context: Activity): Int {
+    val displayMetrics = DisplayMetrics()
+    context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
+    return displayMetrics.heightPixels
+}
+
+fun windowWidth(context: Activity): Int {
+    val displayMetrics = DisplayMetrics()
+    context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
+    return displayMetrics.widthPixels
 }

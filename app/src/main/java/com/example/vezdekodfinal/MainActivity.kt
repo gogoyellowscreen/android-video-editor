@@ -6,13 +6,16 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
+import com.example.vezdekodfinal.ui.editor.ChooseStickerFragment
 import com.example.vezdekodfinal.ui.editor.VideoEditorCropFragment
 import com.example.vezdekodfinal.ui.editor.VideoEditorFragment
+import com.example.vezdekodfinal.ui.editor.VideoEditorStickersFtagment
 import com.example.vezdekodfinal.ui.main.MainFragment
 
 private const val PICK_FROM_GALLERY = 228
 
-class MainActivity : AppCompatActivity(), MainFragment.Callbacks, VideoEditorFragment.Callbacks {
+class MainActivity : AppCompatActivity(), MainFragment.Callbacks, VideoEditorFragment.Callbacks,
+ ChooseStickerFragment.Callbacks, VideoEditorStickersFtagment.Callbacks{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,5 +60,23 @@ class MainActivity : AppCompatActivity(), MainFragment.Callbacks, VideoEditorFra
             .replace(R.id.container, cropFragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onStickersButtonClick(tmpFilePath: String) {
+        val stickersFragment = VideoEditorStickersFtagment.newInstance(tmpFilePath)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, stickersFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onStickerChased(stickerPath: String) {
+        (supportFragmentManager.findFragmentById(R.id.container) as? VideoEditorStickersFtagment)?.onStickerChased(stickerPath)
+    }
+
+    override fun onViewCreated() {
+        val chooseStickerFragment = ChooseStickerFragment.newInstance()
+        chooseStickerFragment.show(supportFragmentManager, "228 ETO SILA")
     }
 }

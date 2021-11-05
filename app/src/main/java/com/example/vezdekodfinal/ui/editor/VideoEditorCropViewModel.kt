@@ -12,6 +12,7 @@ import com.daasuu.mp4compose.FillModeCustomItem
 import com.daasuu.mp4compose.Rotation
 import com.daasuu.mp4compose.composer.Mp4Composer
 import com.daasuu.mp4compose.composer.Mp4ComposerFork
+import com.daasuu.mp4compose.filter.GlFilter
 import com.daasuu.mp4compose.filter.GlFilterGroup
 import com.daasuu.mp4compose.filter.GlMonochromeFilter
 import com.daasuu.mp4compose.filter.GlVignetteFilter
