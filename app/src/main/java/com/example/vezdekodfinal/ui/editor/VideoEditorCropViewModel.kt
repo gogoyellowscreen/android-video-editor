@@ -8,6 +8,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.lifecycle.ViewModel
 import com.daasuu.mp4compose.FillMode
+import com.daasuu.mp4compose.FillModeCustomItem
 import com.daasuu.mp4compose.Rotation
 import com.daasuu.mp4compose.composer.Mp4Composer
 import com.daasuu.mp4compose.composer.Mp4ComposerFork
@@ -32,6 +33,9 @@ class VideoEditorCropViewModel : ViewModel() {
 
     private lateinit var path: String
     private lateinit var tmpPath: String
+
+    var width: Int = 0
+    var height: Int = 0
 
     val xLeftRel = MutableStateFlow(0f)
     val xRightRel = MutableStateFlow(1f)
@@ -129,6 +133,13 @@ class VideoEditorCropViewModel : ViewModel() {
         }
         this.tmpPath = tmpDestFile.path
         Mp4Composer(path, tmpDestFile.path)
+            .fillMode(FillMode.CUSTOM)
+            .customFillMode(FillModeCustomItem(
+                1 / (xRightRel.value - xLeftRel.value),
+                0f, xLeftRel.value * width, yTopRel.value * height,
+                (xRightRel.value - xLeftRel.value) * width,
+                (yBottomRel.value - yTopRel.value) * height
+            ))
             .trim(startPositionMs.value, endPositionMs.value)
             .listener(object : Mp4Composer.Listener {
                 override fun onProgress(progress: Double) {

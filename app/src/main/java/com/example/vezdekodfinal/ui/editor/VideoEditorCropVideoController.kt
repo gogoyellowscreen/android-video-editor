@@ -4,6 +4,10 @@ import android.content.Context
 import android.view.MotionEvent
 import android.view.VelocityTracker
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.flowWithLifecycle
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlin.math.abs
 
 interface VideoEditorCropVideoController {
@@ -94,8 +98,8 @@ class VideoEditorCropVideoControllerImpl(
                     prevXCoord = xStartCoord
                     val newYCoord = event.y.toInt()
                     prevYCoord = yStartCoord
-                    val deltaX = newXCoord - xStartCoord
-                    val deltaY = newYCoord - yStartCoord
+                    val deltaX = newXCoord - xStartCoord + 0f
+                    val deltaY = newYCoord - yStartCoord + 0f
                     val positionXChange = deltaX / view.width
                     val positionYChange = deltaY / view.height
                     //val newCoord = getCoord(event)
@@ -121,7 +125,7 @@ class VideoEditorCropVideoControllerImpl(
     }
 
     private fun getPointer(event: MotionEvent) = when {
-        view.leftBottomBounds.contains(event.x.toInt(), event.y.toInt()) -> {
+        view.leftTopBounds.contains(event.x.toInt(), event.y.toInt()) -> {
             VideoEditorCropVideoView.Pointer.LEFT_TOP
         }
         view.rightTopBounds.contains(event.x.toInt(), event.y.toInt()) -> {
@@ -137,10 +141,25 @@ class VideoEditorCropVideoControllerImpl(
     }
 }
 
-internal fun VideoEditorCropVideoView.attach(
-    context: Context,
+internal fun VideoEditorCropVideoViewAbs.attach(
     viewModel: VideoEditorCropViewModel,
     lifecycle: Lifecycle
 ) {
+    val controller =
+        VideoEditorCropVideoControllerImpl(this)
+    controller.setListener(viewModel.cropVideoListener)
+    this.controller = controller
 
+    viewModel.xLeftRel.onEach {
+        this.xLeftRel = it
+    }.flowWithLifecycle(lifecycle).launchIn(lifecycle.coroutineScope)
+    viewModel.xRightRel.onEach {
+        this.xRightRel = it
+    }.flowWithLifecycle(lifecycle).launchIn(lifecycle.coroutineScope)
+    viewModel.yTopRel.onEach {
+        this.yTopRel = it
+    }.flowWithLifecycle(lifecycle).launchIn(lifecycle.coroutineScope)
+    viewModel.yBottomRel.onEach {
+        this.yBottomRel = it
+    }.flowWithLifecycle(lifecycle).launchIn(lifecycle.coroutineScope)
 }

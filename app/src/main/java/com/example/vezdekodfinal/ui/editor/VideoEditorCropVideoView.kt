@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.vezdekodfinal.R
@@ -58,10 +59,10 @@ class VideoEditorCropVideoViewAbs @JvmOverloads constructor(
     var leftTopDrawable: Drawable = ContextCompat.getDrawable(context, R.drawable.crop_corner_pointer2)!!
     override var leftTopBounds: Rect = Rect(0, 0, 0, 0)
         get() = Rect(
-            xLeft + (xLeftRel * (xRight - xLeft)).toInt(),
-            yTop + (yTopRel * (yBottom - yTop)).toInt(),
-            xLeft + (xLeftRel * (xRight - xLeft)).toInt() + dpToPx(6, context),
-            yTop + (yTopRel * (yBottom - yTop)).toInt() + dpToPx(6, context),
+            xLeft + (xLeftRel * (xRight - xLeft)).toInt() - dpToPx(9, context),
+            yTop + (yTopRel * (yBottom - yTop)).toInt() - dpToPx(9, context),
+            xLeft + (xLeftRel * (xRight - xLeft)).toInt() + dpToPx(9, context),
+            yTop + (yTopRel * (yBottom - yTop)).toInt() + dpToPx(9, context),
         )
 
     override var xRight: Int = 0
@@ -77,10 +78,10 @@ class VideoEditorCropVideoViewAbs @JvmOverloads constructor(
     var rightTopDrawable: Drawable = ContextCompat.getDrawable(context, R.drawable.crop_corner_pointer2)!!
     override var rightTopBounds: Rect = Rect(0, 0, 0, 0)
         get() = Rect(
-            xLeft + (xRightRel * (xRight - xLeft)).toInt(),
-            yTop + (yTopRel * (yBottom - yTop)).toInt(),
-            xLeft + (xRightRel * (xRight - xLeft)).toInt() + dpToPx(6, context),
-            yTop + (yTopRel * (yBottom - yTop)).toInt() + dpToPx(6, context),
+            xLeft + (xRightRel * (xRight - xLeft)).toInt() - dpToPx(9, context),
+            yTop + (yTopRel * (yBottom - yTop)).toInt() - dpToPx(9, context),
+            xLeft + (xRightRel * (xRight - xLeft)).toInt() + dpToPx(9, context),
+            yTop + (yTopRel * (yBottom - yTop)).toInt() + dpToPx(9, context),
         )
 
     override var yTop: Int = 0
@@ -96,10 +97,10 @@ class VideoEditorCropVideoViewAbs @JvmOverloads constructor(
     var leftBottomDrawable: Drawable = ContextCompat.getDrawable(context, R.drawable.crop_corner_pointer2)!!
     override var leftBottomBounds: Rect = Rect(0, 0, 0, 0)
         get() = Rect(
-            xLeft + (xLeftRel * (xRight - xLeft)).toInt(),
-            yTop + (yBottomRel * (yBottom - yTop)).toInt(),
-            xLeft + (xLeftRel * (xRight - xLeft)).toInt() + dpToPx(6, context),
-            yTop + (yBottomRel * (yBottom - yTop)).toInt() + dpToPx(6, context),
+            xLeft + (xLeftRel * (xRight - xLeft)).toInt() - dpToPx(9, context),
+            yTop + (yBottomRel * (yBottom - yTop)).toInt()- dpToPx(9, context),
+            xLeft + (xLeftRel * (xRight - xLeft)).toInt() + dpToPx(9, context),
+            yTop + (yBottomRel * (yBottom - yTop)).toInt() + dpToPx(9, context),
         )
 
     override var yBottom: Int = 0
@@ -115,11 +116,15 @@ class VideoEditorCropVideoViewAbs @JvmOverloads constructor(
     var rightBottomDrawable: Drawable = ContextCompat.getDrawable(context, R.drawable.crop_corner_pointer2)!!
     override var rightBottomBounds: Rect = Rect(0, 0, 0, 0)
         get() = Rect(
-            xLeft + (xRightRel * (xRight - xLeft)).toInt(),
-            yTop + (yBottomRel * (yBottom - yTop)).toInt(),
-            xLeft + (xRightRel * (xRight - xLeft)).toInt() + dpToPx(6, context),
-            yTop + (yBottomRel * (yBottom - yTop)).toInt() + dpToPx(6, context),
+            xLeft + (xRightRel * (xRight - xLeft)).toInt() - dpToPx(9, context),
+            yTop + (yBottomRel * (yBottom - yTop)).toInt() - dpToPx(9, context),
+            xLeft + (xRightRel * (xRight - xLeft)).toInt() + dpToPx(9, context),
+            yTop + (yBottomRel * (yBottom - yTop)).toInt() + dpToPx(9, context),
         )
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return controller?.onTouchEvent(event) ?: false
+    }
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas?) {
@@ -139,10 +144,10 @@ class VideoEditorCropVideoViewAbs @JvmOverloads constructor(
 
         canvas.drawRect(
             Rect(
-                xLeft + (xLeftRel * (xRight - xLeft)).toInt() + dpToPx(3, context),
-                yTop + (yTopRel * (yBottom - yTop)).toInt() + dpToPx(3, context),
-                xLeft + (xRightRel * (xRight - xLeft)).toInt() + dpToPx(3, context),
-                yTop + (yBottomRel * (yBottom - yTop)).toInt() + dpToPx(3, context)
+                xLeft + (xLeftRel * (xRight - xLeft)).toInt(),
+                yTop + (yTopRel * (yBottom - yTop)).toInt(),
+                xLeft + (xRightRel * (xRight - xLeft)).toInt(),
+                yTop + (yBottomRel * (yBottom - yTop)).toInt()
             ), Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 style = Paint.Style.STROKE
                 color = Color.WHITE

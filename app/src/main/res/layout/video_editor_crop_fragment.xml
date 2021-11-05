@@ -9,8 +9,11 @@
     tools:context=".ui.main.MainFragment">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="250dp"
-        android:layout_height="350dp"
+        android:id="@+id/card_player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="350dp"
+        app:layout_constraintWidth_max="250dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="30dp"
@@ -23,8 +26,8 @@
         >
         <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/exo_player_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:use_controller="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,5 +84,16 @@
         tools:value="0.5"
         tools:valueFrom="0.3"
         tools:valueTo="1.0"/>
+
+    <com.example.vezdekodfinal.ui.editor.VideoEditorCropVideoViewAbs
+        android:id="@+id/crop_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:translationZ="101dp"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

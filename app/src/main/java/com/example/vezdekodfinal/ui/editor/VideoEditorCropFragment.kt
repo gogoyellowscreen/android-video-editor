@@ -9,13 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.flowWithLifecycle
 import com.example.vezdekodfinal.R
+import com.example.vezdekodfinal.ui.dpToPx
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -39,9 +42,11 @@ class VideoEditorCropFragment : Fragment() {
     private lateinit var timelineEditorView: VideoEditorRangeSelectorViewAbs
     private lateinit var closeButton: ImageView
     private lateinit var saveButton: TextView
-    //private lateinit var cropView: VideoEditorCropVideoViewAbs
+    private lateinit var cardPlayer: CardView
+    private lateinit var cropView: VideoEditorCropVideoViewAbs
     private lateinit var exoPlayer: SimpleExoPlayer
     private lateinit var exoPlayerView: StyledPlayerView
+    private lateinit var exoContentFrame: AspectRatioFrameLayout
     private var wasLoaded = false
 
     override fun onCreateView(
@@ -63,7 +68,8 @@ class VideoEditorCropFragment : Fragment() {
         exoPlayerView = view.findViewById(R.id.exo_player_view)
         closeButton = view.findViewById(R.id.close_button)
         saveButton = view.findViewById(R.id.save_button)
-        // cropView = view.findViewById(R.id.crop_view)
+        cropView = view.findViewById(R.id.crop_view)
+        cardPlayer = view.findViewById(R.id.card_player)
 
         exoPlayerView.player = exoPlayer
     }
@@ -78,25 +84,9 @@ class VideoEditorCropFragment : Fragment() {
 
         wasLoaded = false
 
-        timelineEditorView.dragHelper = VideoEditorRangeSelectorController(
-            requireContext(),
-            timelineEditorView
-        )
-        timelineEditorView.dragHelper?.setListener(viewModel.rangeSelectorListener)
         timelineEditorView.attach(requireContext(), viewModel, lifecycle)
 
-        /*cropView.controller = VideoEditorCropVideoControllerImpl(cropView).apply {
-            setListener(viewModel.cropVideoListener)
-        }
-        cropView.attach(requireContext(), viewModel, lifecycle)
-
-        cropView.apply {
-            xLeft = exoPlayerView.left
-            xRight = exoPlayerView.right
-            yTop = exoPlayerView.top
-            yBottom = exoPlayerView.bottom
-            visibility = View.VISIBLE
-        }*/
+        cropView.attach(viewModel, lifecycle)
 
         val pathString = arguments?.getString(TMP_FILE_PATH) ?: return
         val uri = Uri.parse(pathString)
@@ -108,6 +98,22 @@ class VideoEditorCropFragment : Fragment() {
         exoPlayer.setMediaItem(mediaItem)
         exoPlayer.prepare()
         exoPlayer.play()
+
+        cardPlayer.postDelayed({
+            cropView.apply {
+                val xXyu = cardPlayer.x.toInt()
+                val yXyu = cardPlayer.y.toInt()
+                exoContentFrame = exoPlayerView.findViewById(R.id.exo_content_frame)
+                xLeft = exoContentFrame.x.toInt() + xXyu
+                xRight = xLeft + exoContentFrame.width
+                yTop = exoContentFrame.y.toInt() + yXyu
+                yBottom = yTop + exoContentFrame.height
+                visibility = View.VISIBLE
+            }
+
+            viewModel.height = cardPlayer.height
+            viewModel.width = cardPlayer.width
+        }, 500)
 
         viewModel.init(pathString, duration, requireContext())  // TODO: check it!
 
