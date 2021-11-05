@@ -23,6 +23,7 @@ class VideoEditorFragment : Fragment() {
     interface Callbacks {
         fun onCropButtonClick(tmpFilePath: String, videoDuration: Long)
         fun onStickersButtonClick(tmpFilePath: String)
+        fun onEffectsButtonClick(tmpFilePath: String)
     }
 
     companion object {
@@ -42,6 +43,7 @@ class VideoEditorFragment : Fragment() {
     private lateinit var saveButton: TextView
     private lateinit var cropButton: ImageView
     private lateinit var stickersButton: ImageView
+    private lateinit var effectsButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,7 @@ class VideoEditorFragment : Fragment() {
         saveButton = view.findViewById(R.id.save_button)
         cropButton = view.findViewById(R.id.times_button)
         stickersButton = view.findViewById(R.id.stickers_button)
+        effectsButton = view.findViewById(R.id.effects_button)
         exoPlayer = SimpleExoPlayer.Builder(view.context).build()
         exoPlayerView = view.findViewById(R.id.exo_player_view)
         exoPlayerView.player = exoPlayer
@@ -83,6 +86,10 @@ class VideoEditorFragment : Fragment() {
 
         stickersButton.setOnClickListener {
             (requireActivity() as Callbacks).onStickersButtonClick(viewModel.tmpFile.path)
+        }
+
+        effectsButton.setOnClickListener {
+            (requireActivity() as Callbacks).onEffectsButtonClick(viewModel.tmpFile.path)
         }
     }
 

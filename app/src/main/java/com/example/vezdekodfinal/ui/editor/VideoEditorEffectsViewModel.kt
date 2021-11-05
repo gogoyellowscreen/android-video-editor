@@ -9,23 +9,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.File
 import java.lang.Exception
 
-class VideoEditorStickersFtagmentViewModel : ViewModel() {
+class VideoEditorEffectsViewModel : ViewModel() {
 
     val isSaving = MutableStateFlow(false)
-    var openStickers = false
-    private lateinit var activity: Activity
+    private lateinit var tmpSessionFile: File
+    private lateinit var tmpEffectsFile: File
 
-    fun init(activity: Activity) {
-        this.activity = activity
+    fun init(tmpSessionFile: File, tmpEffectsFile: File) {
+        this.tmpSessionFile = tmpSessionFile
+        this.tmpEffectsFile = tmpEffectsFile
     }
 
-    fun saveVideoWithSticker(tmpFilePath: String, sticker: Bitmap, x: Float, y: Float) {
+    fun updateTmpEffectsFile(speed: Float) {
         isSaving.compareAndSet(false, true)
-        val tmpDestFile = File("${tmpFilePath.substringBeforeLast('/')}/tmp_${tmpFilePath.substringAfterLast('/')}").apply {
-            createNewFile()
-        }
-        Mp4Composer(tmpFilePath, tmpDestFile.path)
-            .filter(GlStickerFilter(sticker, x, y))
+        Mp4Composer(tmpSessionFile.path, tmpEffectsFile.path)
+            .timeScale(speed)
             .listener(object : Mp4Composer.Listener {
                 override fun onProgress(progress: Double) {
 
@@ -36,11 +34,6 @@ class VideoEditorStickersFtagmentViewModel : ViewModel() {
                 }
 
                 override fun onCompleted() {
-                    tmpDestFile.inputStream().use { ins ->
-                        File(tmpFilePath).outputStream().use { ous ->
-                            ins.copyTo(ous)
-                        }
-                    }
                     isSaving.value = false
                 }
 
@@ -54,5 +47,13 @@ class VideoEditorStickersFtagmentViewModel : ViewModel() {
 
             })
             .start()
+    }
+
+    fun saveChanges() {
+        tmpEffectsFile.inputStream().use { ins ->
+            tmpSessionFile.outputStream().use { ous ->
+                ins.copyTo(ous)
+            }
+        }
     }
 }

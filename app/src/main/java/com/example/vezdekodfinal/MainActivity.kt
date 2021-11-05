@@ -6,10 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
-import com.example.vezdekodfinal.ui.editor.ChooseStickerFragment
-import com.example.vezdekodfinal.ui.editor.VideoEditorCropFragment
-import com.example.vezdekodfinal.ui.editor.VideoEditorFragment
-import com.example.vezdekodfinal.ui.editor.VideoEditorStickersFtagment
+import com.example.vezdekodfinal.ui.editor.*
 import com.example.vezdekodfinal.ui.main.MainFragment
 
 private const val PICK_FROM_GALLERY = 228
@@ -67,6 +64,15 @@ class MainActivity : AppCompatActivity(), MainFragment.Callbacks, VideoEditorFra
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.container, stickersFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onEffectsButtonClick(tmpFilePath: String) {
+        val effectsFragment = VideoEditorEffectsFragment.newInstance(tmpFilePath)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, effectsFragment)
             .addToBackStack(null)
             .commit()
     }
