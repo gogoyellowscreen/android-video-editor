@@ -2,13 +2,7 @@ package com.example.vezdekodfinal.ui.editor
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Outline
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.Rect
-import android.graphics.RectF
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -27,6 +21,9 @@ interface VideoEditorRangeSelectorView {
         FROM,
         TO,
     }
+    val thumbnailHeight: Float
+    val thumbnailWidth: Float
+    var thumbnail: Bitmap?
     var dragHelper: RangeSelectorController?
     var valueFrom: Float
     var valueTo: Float
@@ -46,6 +43,12 @@ class VideoEditorRangeSelectorViewAbs @JvmOverloads constructor(
 ) :
     View(context, attrs, defStyleAttr, defStyleRes),
     VideoEditorRangeSelectorView {
+
+    override var thumbnail: Bitmap? = null
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     var markerFrom: Drawable = ContextCompat.getDrawable(context, R.drawable.video_trimmer_left_marker)!!
         set(value) {
@@ -79,6 +82,8 @@ class VideoEditorRangeSelectorViewAbs @JvmOverloads constructor(
         setShadowLayer(markerValueShadowRadius, 0f, 0f, Color.BLACK)
     }
     private val markerValueShadowWidth = dpToPx(2, context)
+    override val thumbnailHeight: Float get() = (height - paddingTop - paddingBottom).toFloat()
+    override val thumbnailWidth: Float get() = thumbnailHeight
 
     init {
         context.obtainStyledAttributes(
@@ -164,6 +169,7 @@ class VideoEditorRangeSelectorViewAbs @JvmOverloads constructor(
         } else {
             0
         }
+
     override val markerFromBounds get() = if (markerFrom.isVisible) {
         markerFrom.bounds
     } else {
@@ -176,6 +182,8 @@ class VideoEditorRangeSelectorViewAbs @JvmOverloads constructor(
     }
     val timelineWidthPx: Int
         get() = (width - (paddingLeft + paddingRight))
+    private val transformMatrix = Matrix()
+    private val thumbnailPaint = Paint(Paint.FILTER_BITMAP_FLAG)
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -285,7 +293,25 @@ class VideoEditorRangeSelectorViewAbs @JvmOverloads constructor(
             }
         )
 
-        /* TODO: add thumbnails!!!*/
+        drawThumbnails(canvas, thumbnail)
         canvas.restore()
+    }
+
+    private fun drawThumbnails(canvas: Canvas, thumbnail: Bitmap?) {
+        for (i in 0..10) {
+            thumbnail?.let {
+                val thumbnailLeft = (paddingLeft + thumbnail.width * i).toFloat()
+                canvas.save()
+                canvas.translate(thumbnailLeft, workingRectF.top)
+                canvas.clipRect(
+                    0f,
+                    0f,
+                    thumbnailWidth,
+                    thumbnailHeight
+                )
+                canvas.drawBitmap(it, transformMatrix, thumbnailPaint)
+                canvas.restore()
+            }
+        }
     }
 }

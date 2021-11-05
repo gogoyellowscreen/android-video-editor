@@ -20,12 +20,15 @@ import kotlin.random.Random
 class VideoEditorViewModel : ViewModel() {
 
     private lateinit var fileUri: Uri
-    private lateinit var tmpFile: File
-    private lateinit var tmpFileUri: Uri
+    lateinit var tmpFile: File
+    lateinit var tmpFileUri: Uri
     private lateinit var context: Context
     private lateinit var storageManager: StorageManager
+    private var isInitialized = false
 
     fun init(pathUri: Uri, context: Context) {
+        if (isInitialized) return
+        isInitialized = true
         fileUri = pathUri
         this.context = context
         storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager

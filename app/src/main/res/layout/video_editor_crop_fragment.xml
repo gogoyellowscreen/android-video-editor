@@ -9,20 +9,22 @@
     tools:context=".ui.main.MainFragment">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxHeight="650dp"
-        android:maxWidth="250dp"
+        android:layout_width="250dp"
+        android:layout_height="350dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/editor_timeline"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
+        app:cardBackgroundColor="#000000"
         >
         <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/exo_player_view"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:use_controller="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +32,32 @@
             app:layout_constraintTop_toTopOf="parent"
             />
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/close_button"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/editor_close_button"
+        android:translationZ="100dp"
+        />
+
+    <TextView
+        android:id="@+id/save_button"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сохранить"
+        android:fontFamily="@font/vksans"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:translationZ="100dp"
+        />
 
     <com.example.vezdekodfinal.ui.editor.VideoEditorRangeSelectorViewAbs
         android:id="@+id/editor_timeline"

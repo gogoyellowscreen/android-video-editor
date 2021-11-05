@@ -6,12 +6,13 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
+import com.example.vezdekodfinal.ui.editor.VideoEditorCropFragment
 import com.example.vezdekodfinal.ui.editor.VideoEditorFragment
 import com.example.vezdekodfinal.ui.main.MainFragment
 
 private const val PICK_FROM_GALLERY = 228
 
-class MainActivity : AppCompatActivity(), MainFragment.Callbacks {
+class MainActivity : AppCompatActivity(), MainFragment.Callbacks, VideoEditorFragment.Callbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,13 +28,16 @@ class MainActivity : AppCompatActivity(), MainFragment.Callbacks {
 
     fun requestPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), PICK_FROM_GALLERY)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.INTERNET), PICK_FROM_GALLERY)
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), PICK_FROM_GALLERY)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.INTERNET), PICK_FROM_GALLERY)
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), PICK_FROM_GALLERY)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.INTERNET), PICK_FROM_GALLERY)
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.INTERNET), PICK_FROM_GALLERY)
         }
     }
 
@@ -42,6 +46,15 @@ class MainActivity : AppCompatActivity(), MainFragment.Callbacks {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.container, editorFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onCropButtonClick(tmpFilePath: String, videoDuration: Long) {
+        val cropFragment = VideoEditorCropFragment.newInstance(tmpFilePath, videoDuration)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, cropFragment)
             .addToBackStack(null)
             .commit()
     }
